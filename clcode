@@ -1,0 +1,78 @@
+#!/bin/bash
+
+IN_PATH=$1
+EXT=$2
+
+DIR_PATH=" "
+FILE_PATH=" "
+
+CUR_DIR=$(pwd)
+SELF_DIR=$(cd $(dirname $0); pwd)
+cd $CUR_DIR
+
+
+if [ -z $1 ]; then
+	echo "usage: clcode [FILE_PATH]"
+	echo "       clcode [DIR_PATH] [EXT]"
+	exit 1
+fi
+
+if [ $IN_PATH = "/" ]; then
+	echo "error: DIL_PATH except '/'"
+	exit 1
+fi
+
+#入力が . -> カレント絶対パス
+if [ $IN_PATH = "." ]; then
+	IN_PATH=$(pwd)
+fi
+
+#入力が相対パス -> 絶対パス
+if [ ${IN_PATH:0:1} != "/" ]; then
+	IN_PATH="${$(pwd)}/${IN_PATH}"
+fi
+
+#パスのファイルが存在する
+if [ -f $IN_PATH ]; then
+	FILE_PATH=$IN_PATH
+fi
+
+#パスのディレクトリが存在する
+if [ -d $IN_PATH ]; then
+	DIR_PATH=$IN_PATH
+fi
+
+#パスが存在しない(-z 空の時)
+if [ $DIR_PATH = " " ] && [ $FILE_PATH = " " ]; then
+	echo "${IN_PATH} does not exist"
+	exit 1
+fi
+
+#対象がファイルの場合(-n 空以外の時)
+if [ $FILE_PATH != " " ]; then
+	cp $FILE_PATH "${FILE_PATH}.bk"
+	python3 "${SELF_DIR}/src/main.py" $IN_PATH
+	echo "${IN_PATH} ok"
+	exit
+fi
+
+#拡張子指定なしの場合
+if [ -z $2 ]; then
+	echo "usage: clcode [FILE_PATH]"
+	echo "       clcode [DIR_PATH] [EXT]"
+	exit 1
+fi
+
+if [ ${EXT:0:1} != "." ]; then
+	EXT=".${EXT}" 
+fi
+
+#対象がディレクトリの場合
+if [ $DIR_PATH != " " ]; then
+	cp -r $DIR_PATH "${DIR_PATH}.bk"
+	for fpath in `find $IN_PATH -name "*${EXT}"` 
+	do 
+		python3 "${SELF_DIR}/src/main.py" $fpath
+		echo "${fpath} ok" 
+	done
+fi
