@@ -1,5 +1,5 @@
 import sys
-from indent import indent
+from clean import indent
 
 
 def main():
