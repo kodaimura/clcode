@@ -73,6 +73,5 @@ if [ $DIR_PATH != " " ]; then
 	for fpath in `find $IN_PATH -name "*${EXT}"` 
 	do 
 		python3 "${SELF_DIR}/src/main.py" $fpath
-		echo "${fpath} ✔︎" 
 	done
 fi
