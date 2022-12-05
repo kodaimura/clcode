@@ -1,5 +1,5 @@
-import sys
-from clean import indent
+import sys, os.path
+from clean import clean
 
 
 def main():
@@ -13,17 +13,12 @@ def clean_file(path):
 	cleaned = ""
 	count_cleaned_lines = 0
 	with open(path, "r") as f:
-		for line in f:
-			new_line = indent(line)
-			cleaned += new_line
-
-			if line != new_line:
-				count_cleaned_lines += 1
+		cleaned, cleaned_lines = clean(f, get_file_extension(path))
 
 	with open(path, "w") as f:
 		f.write(cleaned)
 
-	return count_cleaned_lines
+	return cleaned_lines
 
 
 def print_result(path, count_cleaned_lines):
@@ -31,6 +26,11 @@ def print_result(path, count_cleaned_lines):
 		print(path + " ✔︎", end="\n")
 	else:
 		print(path + " -", end="\n")
+
+
+def get_file_extension(path):
+	_, ext = os.path.splitext(path)
+	return ext
 
 
 main()

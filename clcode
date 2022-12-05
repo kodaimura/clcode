@@ -52,7 +52,6 @@ fi
 if [ "$FILE_PATH" != " " ]; then
 	cp $FILE_PATH "${FILE_PATH}.bk"
 	python3 "${SELF_DIR}/src/main.py" $IN_PATH
-	echo "${IN_PATH} ok"
 	exit
 fi
 
