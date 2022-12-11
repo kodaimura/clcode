@@ -1,7 +1,7 @@
 def clean(fobj, ext):
 	content, count = "", 0
 	
-	if ext == ".clj":
+	if ext == ".clj" or ext == ".edn":
 		content, count = clean_clj(fobj)
 	elif ext == ".html":
 		content, count = clean_html(fobj)
