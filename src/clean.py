@@ -1,23 +1,48 @@
 def clean(fobj, ext):
 	content, count = "", 0
 	
-	if ext == ".clj" or ext == ".edn":
-		content, count = clean_clj(fobj)
-	elif ext == ".html":
+	if ext == ".html":
 		content, count = clean_html(fobj)
-	else:
-		content, count = clean_general(fobj) 
+	elif ext == ".css":
+		content, count = clean_css(fobj)
+	elif ext == ".js":
+		content, count = clean_js(fobj)
+	elif ext == ".ts":
+		content, count = clean_ts(fobj)
+	elif ext == ".php":
+		content, count = clean_php(fobj)
+	elif ext == ".clj" or ext == ".edn":
+		content, count = clean_clj(fobj)
+	elif ext == ".go":
+		content, count = clean_go(fobj)
+	elif ext == ".py":
+		content, count = clean_py(fobj)
 
 	return content, count
 
 
-def clean_clj(fobj):
-	return clean_lines(fobj, tab_to_space2)
-
 def clean_html(fobj):
 	return clean_lines(fobj, tab_to_space2)
 
-def clean_general(fobj):
+def clean_css(fobj):
+	return clean_lines(fobj, tab_to_space2)
+
+def clean_js(fobj):
+	return clean_lines(fobj, tab_to_space2)
+
+def clean_ts(fobj):
+	return clean_lines(fobj, tab_to_space2)
+
+def clean_php(fobj):
+	return clean_lines(fobj, tab_to_space4)
+
+def clean_clj(fobj):
+	return clean_lines(fobj, tab_to_space2)
+
+def clean_go(fobj):
+	return clean_lines(fobj, space4_to_tab)
+
+def clean_py(fobj):
 	return clean_lines(fobj, space4_to_tab)
 
 
@@ -41,6 +66,9 @@ def tab_to_space2(line):
 	sc, tc = count_space_tab(line)
 	return "  "*tc + " "*sc + line[sc + tc:]
 
+def tab_to_space4(line):
+	sc, tc = count_space_tab(line)
+	return "    "*tc + " "*sc + line[sc + tc:]
 
 def count_space_tab(line):
 	space, tab = 0, 0
